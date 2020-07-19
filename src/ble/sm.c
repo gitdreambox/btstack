@@ -191,9 +191,9 @@ static uint8_t sm_io_capabilities = IO_CAPABILITY_NO_INPUT_NO_OUTPUT;
 static uint8_t sm_slave_request_security;
 static uint32_t sm_fixed_passkey_in_display_role;
 static uint8_t sm_reconstruct_ltk_without_le_device_db_entry;
-static bool sm_sc_only_mode;
 
 #ifdef ENABLE_LE_SECURE_CONNECTIONS
+static bool sm_sc_only_mode;
 static uint8_t sm_sc_oob_random[16];
 static void (*sm_sc_oob_callback)(const uint8_t * confirm_value, const uint8_t * random_value);
 static sm_sc_oob_state_t sm_sc_oob_state;
@@ -3797,8 +3797,11 @@ static void sm_pdu_handler(uint8_t packet_type, hci_con_handle_t con_handle, uin
 
             // validate confirm value if Cb = f4(Pkb, Pka, Nb, z)
             // only check for JUST WORK/NC in initiator role OR passkey entry
+            log_info("SM_SC_W4_PAIRING_RANDOM, responder: %u, just works: %u, passkey used %u, passkey entry %u",
+                     IS_RESPONDER(sm_conn->sm_role), sm_just_works_or_numeric_comparison(setup->sm_stk_generation_method),
+                     sm_passkey_used(setup->sm_stk_generation_method), sm_passkey_entry(setup->sm_stk_generation_method));
             if ( (!IS_RESPONDER(sm_conn->sm_role) && sm_just_works_or_numeric_comparison(setup->sm_stk_generation_method)) 
-            ||   (sm_passkey_used(setup->sm_stk_generation_method)) ) {
+            ||   (sm_passkey_entry(setup->sm_stk_generation_method)) ) {
                  sm_conn->sm_engine_state = SM_SC_W2_CMAC_FOR_CHECK_CONFIRMATION;
                  break;
             }

@@ -232,11 +232,11 @@ static void stdin_process(char cmd){
     switch (cmd){
         case 'c':
             printf(" - Create AVRCP connection to addr %s.\n", bd_addr_to_str(device_addr));
-            status = avrcp_controller_connect(device_addr, &avrcp_cid);
+            status = avrcp_connect(device_addr, &avrcp_cid);
             break;
         case 'B':
             printf(" - Disconnect\n");
-            status = avrcp_controller_disconnect(avrcp_cid);
+            status = avrcp_disconnect(avrcp_cid);
             break;
         case 'i':
             printf(" - get play status\n");
@@ -346,6 +346,9 @@ int btstack_main(int argc, const char * argv[]){
 
     l2cap_init();
     
+    // Initialize AVRCP service.
+    avrcp_init();
+    avrcp_register_packet_handler(&packet_handler);
     // Initialize AVRCP COntroller
     avrcp_controller_init();
     avrcp_controller_register_packet_handler(&packet_handler);

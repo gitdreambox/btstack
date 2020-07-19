@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
-
+- HFP: Fix parsing of empty fields, e.g. phone number in +CLCC and other AT commands
+- sm: Fix validation of confirm value for secure connection Passkey entry
+ 
 ### Added
-- GAP: Detect Secure Connection -> Legacy Connection Downgrade Attack (BIAS)
+- GAP: Detect Secure Connection -> Legacy Connection Downgrade Attack by remote features and actual encryption type (BIAS) 
+- GAP: Mutual authentication: request authentication after Classic connection got encrypted (BIAS)
 
 ### Changed
+- CVSD PLC: treat zero frames as good and allow to mark data as bad, e.g. if reported by controller as erroneous
+- btstack_audio: add set_volume() to sink and set_gain() to source interfaces
 
 ## Changes May 2020
 
