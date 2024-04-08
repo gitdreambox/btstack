@@ -2594,8 +2594,8 @@ static bool sm_ctkd_from_classic(sm_connection_t * sm_connection){
     // - BR/EDR uses secure connections
     if (gap_secure_connection_for_link_key_type(hci_connection->link_key_type) == false) return false;
     // - bonding needs to be enabled:
-    bool bonding_enabled = (sm_pairing_packet_get_auth_req(setup->sm_m_preq) & sm_pairing_packet_get_auth_req(setup->sm_s_pres) & SM_AUTHREQ_BONDING ) != 0u;
-    if (!bonding_enabled) return false;
+    // bool bonding_enabled = (sm_pairing_packet_get_auth_req(setup->sm_m_preq) & sm_pairing_packet_get_auth_req(setup->sm_s_pres) & SM_AUTHREQ_BONDING ) != 0u;
+    // if (!bonding_enabled) return false;
     // - there is no stored LTK or the derived key has at least the same level of authentication (bail if LTK is authenticated but Link Key isn't)
     bool link_key_authenticated = gap_authenticated_for_link_key_type(hci_connection->link_key_type);
     if (link_key_authenticated) return true;
@@ -3286,7 +3286,7 @@ static void sm_run(void){
                 key_distribution_flags |= SM_KEYDIST_ID_KEY;
 #endif
                 // drop flags not requested by initiator
-                key_distribution_flags &= sm_pairing_packet_get_initiator_key_distribution(connection->sm_m_preq);
+                // key_distribution_flags &= sm_pairing_packet_get_initiator_key_distribution(connection->sm_m_preq);
 
                 // If Secure Connections pairing has been initiated over BR/EDR, the following fields of the SM Pairing Request PDU are reserved for future use:
                 // - the IO Capability field,
@@ -4902,7 +4902,7 @@ static void sm_pdu_handler(uint8_t packet_type, hci_con_handle_t con_handle, uin
             (void)memcpy(&sm_conn->sm_m_preq, packet, sizeof(sm_pairing_packet_t));
 
             // validate encryption key size
-            max_encryption_key_size = sm_pairing_packet_get_max_encryption_key_size(setup->sm_m_preq);
+            max_encryption_key_size = sm_pairing_packet_get_max_encryption_key_size(sm_conn->sm_m_preq);
             if ((max_encryption_key_size < 7) || (max_encryption_key_size > 16)){
                 sm_pairing_error(sm_conn, SM_REASON_INVALID_PARAMETERS);
                 break;

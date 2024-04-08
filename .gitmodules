@@ -1,0 +1,3 @@
+[submodule "3rd-party/bluetoothSIG"]
+	path = 3rd-party/bluetoothSIG
+	url = https://bitbucket.org/bluetooth-SIG/public.git
