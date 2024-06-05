@@ -5502,6 +5502,8 @@ static uint8_t own_address_type(void){
     switch (gap_random_adress_type){
         case GAP_RANDOM_ADDRESS_TYPE_OFF:
             return BD_ADDR_TYPE_LE_PUBLIC;
+        case GAP_RANDOM_ADDRESS_RESOLVABLE:
+            return BD_ADDR_TYPE_LE_PUBLIC_IDENTITY;
         default:
             return BD_ADDR_TYPE_LE_RANDOM;
     }
